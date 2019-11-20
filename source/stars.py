@@ -17,4 +17,7 @@ class Stars:
             if star[0] < 0:
                 star[0] = screensize[0]
                 star[1] = randint(0, screensize[1])
+            if star[1] > screensize[1]:
+                star[0] = randint(0, screensize[0])
+                star[1] = 0
         screen.blit(background,(0,0))
