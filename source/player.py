@@ -1,20 +1,27 @@
 from ship import *
 class Player(Ship):
+
     def __init__(self, screensize):
-        super().__init__(50,screensize[1]*0.95, 100)
+        super().__init__(screensize[0] * 0.50,screensize[1]*0.95, 100)
         self.sprite = pygame.image.load("../imagens/player/ship.png")
         self.shotY = 0
         self.shotBool = False
+        self.velocity = 10
+        self.colorShot  = (0,255,127)
+    
     def assets(self):
         pass
+
     def input(self):
         self.teclas = pygame.key.get_pressed()
         if self.teclas[K_LEFT]:
-            self.setPositionX(int(self.getPositionX() - 2))
+            self.setPositionX(int(self.getPositionX() - self.velocity))
         if self.teclas[K_RIGHT]:
-            self.setPositionX(round(self.getPositionX() + 2))
+            self.setPositionX(int(self.getPositionX() + self.velocity))
+    
     def draw(self, screen):
         screen.blit(self.sprite, (self.getPositionX(), self.getPositionY()))
+    
     def shot(self, screen):
         if self.shotBool == False:
             if self.teclas[K_UP] or self.teclas[K_SPACE]:
@@ -23,8 +30,6 @@ class Player(Ship):
                 self.shotBool = True
         if self.shotBool == True:
             self.shotY -= 10
-            pygame.draw.rect(screen, (0,255,127), (super().getPositionShotX(), self.shotY,5,10))
+            pygame.draw.rect(screen, self.colorShot, (super().getPositionShotX()+12, self.shotY,5,10))
         if self.shotY < 0:
             self.shotBool = False
-    def drawShot(self):
-        pass

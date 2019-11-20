@@ -1,12 +1,14 @@
 import pygame
 from random import randint
 class Stars:
+
     def __init__(self, numberStars, screensize):
         self.numberStars = numberStars
         self.stars = [
 	        [randint(0, screensize[0]),randint(0, screensize[1])]
 	        for x in range(self.numberStars)
         ]
+    
     def draw(self, screen, screensize):
         background = pygame.Surface(screen.get_size())
         background = background.convert()
