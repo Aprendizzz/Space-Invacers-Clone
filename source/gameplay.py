@@ -36,7 +36,7 @@ def makeMatrix():
     while j < 5:
         i = 0
         while i < 12:
-            matrixOfEnemy.append((startPosition[0] + i * (sizeOfEnemy+spaceOfEnemy[0]), startPosition[1] + j * (sizeOfEnemy+spaceOfEnemy[1])))
+            matrixOfEnemy.append([startPosition[0] + i * (sizeOfEnemy+spaceOfEnemy[0]), startPosition[1] + j * (sizeOfEnemy+spaceOfEnemy[1])])
             i += 1
         j += 1
 makeMatrix()
