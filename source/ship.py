@@ -2,7 +2,7 @@ from vector2D import Vector2D
 import pygame
 from pygame.locals import *
 from random import randint
-class Ship:
+class Ship(object):
 
     def __init__(self, x,y, life):
         self.position = Vector2D(x, y)

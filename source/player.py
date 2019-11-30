@@ -18,18 +18,19 @@ class Player(Ship):
             self.setPositionX(int(self.getPositionX() - self.velocity))
         if self.teclas[K_RIGHT]:
             self.setPositionX(int(self.getPositionX() + self.velocity))
-    
-    def draw(self, screen):
-        screen.blit(self.sprite, (self.getPositionX(), self.getPositionY()))
-    
-    def shot(self, screen):
         if self.shotBool == False:
             if self.teclas[K_UP] or self.teclas[K_SPACE]:
                 super().shot()
                 self.shotY = super().getPositionShotY()
                 self.shotBool = True
+        if self.shotY < 0:
+            self.shotBool = False
+    
+    def draw(self, screen):
+        screen.blit(self.sprite, (self.getPositionX(), self.getPositionY()))
         if self.shotBool == True:
             self.shotY -= 10
             pygame.draw.rect(screen, self.colorShot, (super().getPositionShotX()+12, self.shotY,5,10))
-        if self.shotY < 0:
-            self.shotBool = False
+    
+    def shot(self, screen):
+        pass

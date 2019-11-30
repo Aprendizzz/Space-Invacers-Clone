@@ -1,9 +1,12 @@
 from ship import *
+from vector2D import *
 
 class EnemyPurple(Ship):
 
-    def __init__(self):
-        super().__init__(0,0, 300)
+    def __init__(self, number, x, y, life):
+        super().__init__(x,y, life)
+        #self.position = (Vector2D(x,y))
+        self.number = number
         self.sprite = []
         self.sprite.append(pygame.image.load("../imagens/enemy/enemyPurple/enemy1_1.png"))
         self.sprite.append(pygame.image.load("../imagens/enemy/enemyPurple/enemy1_2.png"))
