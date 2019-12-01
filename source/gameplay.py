@@ -38,19 +38,18 @@ class GamePlay():
         self.startPosition = [10,50]
 
     def makeMatrix(self):
-        linha = 12
-        coluna = 5
-        # for i in range(60):
-        #     if i % 12:
-        #         self.matrixOfEnemy.append(EnemyPurple(i, (i * 30), (i), 100))
-        for i in range(12):
-            for j in range(5):
-                self.matrixOfEnemy.append(enemyPurple(i, (i * 30), (j * 10), 100)
+        for i in range(60):
+            coluna = i % 5
+            linha = i // 5
+            self.matrixOfEnemy.append(EnemyPurple(i, (linha * (15 + 30)), ( coluna * (15 + 30)), 100))
 
-            pass
+    
     def drawMatrix(self):
         for enemy in self.matrixOfEnemy:
             self.getScreen().blit(enemy.assets()[0],(enemy.getPositionX() , enemy.getPositionY()))
+            enemy.setPositionX(enemy.getPositionX() + 5)
+            if(enemy.getPositionX() > self.screensize[0]):
+                enemy.setPositionX(0)
 
 
     def getClock(self):
@@ -65,6 +64,7 @@ class GamePlay():
     def instaces(self):
         player = Player(self.getScreenSize())
         stars = Stars(200, self.getScreenSize())
+        enemyPurple = EnemyPurple(0, 0,0,0)
 
     def input(self, player):
         player.input()
@@ -72,11 +72,13 @@ class GamePlay():
         pass
     
     def update(self):
+        
         pass
     
     def render(self, stars, player):
         stars.draw(self.getScreen(), self.getScreenSize())
         player.draw(self.getScreen())
+        
         self.drawMatrix()
         #player.shot(self.getScreen())
         pygame.display.update()

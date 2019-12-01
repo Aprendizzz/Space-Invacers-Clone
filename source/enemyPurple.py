@@ -27,6 +27,10 @@ class EnemyPurple(Ship):
             print(self.getPositionY())
             self.setPositionY(int(self.getPositionY() + (self.velocity * 2)))
             self.directionRight = True
+    
+    def move2(self, screensize, matrixOfEnemy):
+        pass
+
     def getDirectionRight(self):
         return self.directionRight
 
