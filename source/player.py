@@ -1,7 +1,10 @@
 from ship import *
+from vector2D import Vector2D
 class Player(Ship):
 
-    def __init__(self, screensize):
+    def __init__(self, screensize, x, y, life):
+        self.position = Vector2D(x,y)
+        self.life = life
         super().__init__(screensize[0] * 0.50,screensize[1]*0.95, 100)
         self.sprite = pygame.image.load("../imagens/player/ship.png")
         self.shotY = 0
