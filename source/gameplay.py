@@ -26,25 +26,30 @@ class GamePlay():
         self.user32 = ctypes.windll.user32
         self.screensize = [self.user32.GetSystemMetrics(0), self.user32.GetSystemMetrics(1)]
         self.gameEnd = False
-        self.directionRight = False
+        self.direction = 0
         self.moveEnemyX = 0
         self.moveEnemyY = 0
         self.matrixOfEnemy = []
-        self.sizeOfEnemy = 30
-        self.spaceOfEnemy = [30,10]
-        self.startPosition = [10,50]
+        self.controllerAnimation = False
 
     def makeMatrix(self):
         for i in range(60):
             coluna = i % 5
             linha = i // 5
-            self.matrixOfEnemy.append(Enemy(i, (int(self.getScreenSize()[0]*0.3) +  linha * (15 + 30)), ( coluna * (15 + 30)), 100))
+            self.matrixOfEnemy.append(Enemy(i, (int(self.getScreenSize()[0]*0.3) +  linha * 55), ( coluna * 45), 100))
 
     
     def drawMatrix(self):
+        i = 0
         for enemy in self.matrixOfEnemy:
-            self.getScreen().blit(enemy.assets()[0],(enemy.getPositionX() , enemy.getPositionY()))
-            
+            i +=1
+            coluna = i % 5
+            if (coluna  == 1):
+                self.getScreen().blit(enemy.assets()[self.getAnimation()[0]],(enemy.getPositionX() , enemy.getPositionY()))
+            elif (coluna >= 2 and coluna < 4):
+                self.getScreen().blit(enemy.assets()[self.getAnimation()[1]],(enemy.getPositionX() , enemy.getPositionY()))
+            else:
+                self.getScreen().blit(enemy.assets()[self.getAnimation()[2]],(enemy.getPositionX() , enemy.getPositionY()))
     def getClock(self):
         return self.clock.tick(60) 
 
@@ -54,10 +59,17 @@ class GamePlay():
     def getScreenSize(self):
         return self.screensize[0], self.screensize[1]
 
-    # def instaces(self):
-    #     player = Player(self.getScreenSize())
-    #     stars = Stars(200, self.getScreenSize())
-    #     enemyPurple = EnemyPurple(0, 0,0,0)
+    def setDirection(self):
+        if (max(enemy[0] for enemy in self.matrixOfEnemy) > self.getScreenSize[0]):
+                self.direction = 1
+        elif (min(enemy[0] for enemy in self.matrixOfEnemy) < 10):
+            self.direction = 0
+    
+    def getAnimation(self):
+        if self.controllerAnimation == True:
+            return [1,3,5]
+        else:
+            return [0,2,4]
 
     def input(self, player):
         player.input()
@@ -65,15 +77,18 @@ class GamePlay():
     
     def update(self):
         for enemy in self.matrixOfEnemy:
-            enemy.move2(self.getScreenSize(), enemy)
-            #return enemy
-        pass
-    
+            enemy.move2(self.getScreenSize(), enemy, self.direction)
+            #print(enemy.getPositionX())
+        #print(max(self.matrixOfEnemy))
+        # self.setDirection()
+
+  
     def render(self, stars, player):
         stars.draw(self.getScreen(), self.getScreenSize())
         player.draw(self.getScreen())
         
         self.drawMatrix()
+        # print(self.matrixOfEnemy[0].getPositionX())
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -85,7 +100,18 @@ class GamePlay():
     
     def gameLoop(self):
         self.getScreen()
+        contador = 0
         while self.gameEnd == False:
+            
+            if contador > 20:
+                self.controllerAnimation = True
+            if contador >= 20 and contador < 40:
+                self.controllerAnimation = False
+            if contador > 40:
+                contador = 0
+            contador += 1
+
+            print(contador)
             self.getClock()
             self.input(player)
             self.update()
@@ -93,7 +119,7 @@ class GamePlay():
 
 
 gamePlay = GamePlay()
-player = Player(gamePlay.getScreenSize(),0,0,0)
-stars = Stars(200, gamePlay.getScreenSize())
 gamePlay.makeMatrix()
+player = Player(gamePlay.getScreenSize(),gamePlay.getScreenSize()[0] * 0.5,gamePlay.getScreenSize()[1] * 0.95,100)
+stars = Stars(400, gamePlay.getScreenSize())
 gamePlay.gameLoop()
